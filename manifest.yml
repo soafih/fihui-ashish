@@ -1,0 +1,8 @@
+applications:
+- name: FoxIntegrationHub
+  instances: 1
+  memory: 256M
+  stack: alsek
+  services:
+    helloworldmdb: mongodb
+  

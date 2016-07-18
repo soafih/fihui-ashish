@@ -1,0 +1,119 @@
+var express = require('express');
+var router = express.Router();
+
+router.get('/', function(req, res) {
+    // Set our internal DB variable
+    var db = req.db;
+    var collection = db.get('coll_api');
+    collection.find({}, function(err, apis){
+        if (err) throw err;
+      	res.json(apis);
+    });
+});
+
+router.get('/name/:name', function(req, res) {
+    var db = req.db;
+    var collection = db.get('coll_api');
+    collection.findOne({ name: req.params.name }, function(err, api){
+        if (err) throw err;
+      	res.json(api);
+    });
+});
+
+router.get('/name/:name/version/:version', function(req, res) {
+    var db = req.db;
+    var collection = db.get('coll_api');
+    collection.findOne({ name: req.params.name, version: req.params.version }, function(err, api){
+        if (err) throw err;
+      	res.json(api);
+    });
+});
+
+router.post('/', function(req, res){
+    var db = req.db;
+    var collection = db.get('coll_api');
+    console.log('Inserting API: '+req.body.name);
+    collection.insert(req.body, function(err, api){
+        if (err) throw err;
+        console.log('Successfully Inserted: '+app.name);
+        res.send(app);
+    });
+});
+
+router.post('/addapi', function(req, res){
+    var db = req.db;
+    var collection = db.get('coll_api');
+    collection.insert({
+        name: req.body.apiName,
+        descr: req.body.apiDescr,
+        version: req.body.apiVersion,
+        references: req.body.apiReferences,
+        published_date: req.body.apiPublishedDate,
+        icon: req.body.apiIcon,
+        api_ep: req.body.apiEP,
+        created_by: req.body.apiCreatedBy,
+        created_date: req.body.apiCreatedDate,
+        last_updated_by: req.body.apiLastUpdatedBy,
+        last_updated_date: req.body.apiLastUpdatedDate
+    }, function(err, api){
+        if (err) {
+            res.send("There was a problem adding the information to the database.");
+        }
+        else {
+            res.redirect("apislist");
+        }
+    });
+});
+
+router.put('/name/:name', function(req, res){
+    var db = req.db;
+    var collection = db.get('coll_api');
+    collection.update({
+        name: req.params.name
+    },
+    req.body, function(err, api){
+        if (err) throw err;
+        res.json(api);
+    });
+});
+
+/* Update directly
+router.put('/name/:name', function(req, res){
+    var db = req.db;
+    var collection = db.get('coll_api');
+    collection.update({
+        name: req.params.name
+    },
+    {
+        name: req.body.apiName,
+        descr: req.body.apiDescr,
+        version: req.body.apiVersion,
+        references: req.body.apiReferences,
+        published_date: req.body.apiPublishedDate,
+        icon: req.body.apiIcon,
+        api_ep: req.body.apiEP,
+        created_by: req.body.apiCreatedBy,
+        created_date: req.body.apiCreatedDate,
+        last_updated_by: req.body.apiLastUpdatedBy,
+        last_updated_date: req.body.apiLastUpdatedDate
+    }, function(err, api){
+        if (err) {
+            res.send("There was a problem adding the information to the database.");
+        }
+        else {
+            res.redirect("apislist");
+        }
+    });
+});
+*/
+
+router.delete('/name/:name', function(req, res){
+    var db = req.db;
+    var collection = db.get('coll_api');
+    collection.remove({ name: req.params.name }, function(err, api){
+        if (err) throw err;
+        res.json(api);
+    });
+});
+
+module.exports = router;
