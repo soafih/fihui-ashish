@@ -22,10 +22,37 @@ router.get('/name/:name', function(req, res) {
 
 router.get('/databases', function(req, res) {
     var db = req.db;
-    var collection = db.get('coll_app');
-    collection.distinct('api_config.db_config.db_name', function(err, app){
+    var collection = db.get('coll_dbconfig');
+    collection.find({}, function(err, databases){
         if (err) throw err;
-      	res.json(app);
+      	res.json(databases);
+    });
+});
+
+router.get('/databases/name/:name', function(req, res) {
+    var db = req.db;
+    var collection = db.get('coll_dbconfig');
+    collection.find({db_name: req.params.name}, function(err, database){
+        if (err) throw err;
+      	res.json(database);
+    });
+});
+
+router.get('/databases/type/:type', function(req, res) {
+    var db = req.db;
+    var collection = db.get('coll_dbconfig');
+    collection.find({db_type: req.params.type}, function(err, database){
+        if (err) throw err;
+      	res.json(database);
+    });
+});
+
+router.get('/databases', function(req, res) {
+    var db = req.db;
+    var collection = db.get('coll_dbconfig');
+    collection.find({}, function(err, databases){
+        if (err) throw err;
+      	res.json(databases);
     });
 });
 

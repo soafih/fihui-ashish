@@ -12,7 +12,7 @@ var apps = require('./routes/apps');
 
 // Initialize Monk for establishing connection with MongoDB
 var monk = require('monk');
-var db =  monk('mongodb://63dff18d-4218-40ce-a3e5-8d9f5b864c39:47a5e2f2-ddf2-45c6-9e3b-1d4ea3fca213@10.135.4.49:15001/db');
+var db =  monk('mongodb://389166f6-16c5-4daa-98e1-52ac03218ca7:c42d4d2c-ef5c-47ef-ac5d-116fe6a86d0c@10.135.4.49:15006/db');
 
 var app = express();
 
@@ -21,7 +21,7 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 
 // uncomment after placing your favicon in /public
-//app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
+app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
